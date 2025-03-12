@@ -5,7 +5,7 @@ import NoteCards from '../NoteCards/NoteCards'
 const Discover = () => {
   return (
     <div className=' bg-[#f7f8fa] mt-6'>
-      <div className='folders w-[full] h-full rounded-xl px-6 pt-6'>
+      <div className='folders w-[full] h-full rounded-xl px-10 pt-6'>
         <h1 className='text-[#242627] font-bold text-[25px]'>Recent Folders</h1>
         <div className='flex mt-3 gap-3 items-center'>
           <p className='text-[#242627] font-semibold text-[18px]'>Today</p>
@@ -19,7 +19,7 @@ const Discover = () => {
         </div>
       </div>
 
-      <div className='notes w-[full] h-full rounded-xl px-6 mt-3'>
+      <div className='notes w-[full] h-full rounded-xl px-10 mt-3'>
         <h1 className='text-[#242627] font-bold text-[25px]'>Recent Notes</h1>
         <div className='flex mt-3 gap-3 items-center'>
           <p className='text-[#242627] font-semibold text-[18px] underline'>
