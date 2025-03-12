@@ -7,10 +7,10 @@ const Discover = () => {
       <h1 className='text-[#242627] font-bold text-[25px]'>Recent Folders</h1>
       <div className='flex mt-3 gap-3 items-center'>
         <p className='text-[#242627] font-semibold text-[18px]'>Today</p>
-        <p className='text-[#242627] font-semibold text-[18px]'>This Week</p>
+        <p className='text-[#242627] font-semibold text-[18px] underline'>This Week</p>
         <p className='text-[#242627] font-semibold text-[18px]'>This Month</p>
       </div>
-      <div className='folderCards mt-6'>
+      <div className='folderCards'>
         <FolderCards></FolderCards>
       </div>
     </div>
