@@ -7,9 +7,6 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Note-Nest",
   description: "A Notes App created by Next JS",
-  icons: {
-    icon: "/note-nest-logo.jpg",
-  },
 };
 
 export default function RootLayout({ children }) {
