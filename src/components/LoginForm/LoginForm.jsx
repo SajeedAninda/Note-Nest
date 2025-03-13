@@ -1,12 +1,35 @@
 'use client'
 import React from 'react'
+import useAuth from '../Hooks/useAuth'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 const LoginForm = () => {
+  let { signIn } = useAuth()
+    let router = useRouter();
+
+
   const handleLoginSubmit = e => {
     e.preventDefault()
     let email = e.target.email.value
     let password = e.target.password.value
-    console.log(email, password)
+    let loadingToast = toast.loading('Logging In...')
+    signIn(email, password)
+      .then(userCredential => {
+        const user = userCredential.user
+        console.log(user)
+        toast.dismiss(loadingToast)
+        toast.success('Logged In Successfully!')
+        router.push('/')
+      })
+      .catch(error => {
+        let errorCode = error.code
+        console.log(errorCode)
+        if (errorCode === 'auth/invalid-credential') {
+          toast.dismiss(loadingToast)
+          return toast.error('Invalid Username or Password')
+        }
+      })
   }
 
   return (

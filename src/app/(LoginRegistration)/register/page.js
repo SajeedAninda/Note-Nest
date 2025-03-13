@@ -19,7 +19,6 @@ const page = () => {
         let email = e.target.email.value;
         let password = e.target.password.value;
         let imgUrl = e.target.imgUrl.value;
-        console.log({ fullName, email, password, imgUrl })
 
         if (password.length < 6) {
             return toast.error('Password must be at least 6 characters!')
