@@ -2,7 +2,12 @@
 import React from 'react'
 
 const LoginForm = () => {
-  const handleLoginSubmit = e => {}
+  const handleLoginSubmit = e => {
+    e.preventDefault()
+    let email = e.target.email.value
+    let password = e.target.password.value
+    console.log(email, password)
+  }
 
   return (
     <form onSubmit={handleLoginSubmit} className='max-w-md md:ml-auto w-full'>
@@ -39,7 +44,7 @@ const LoginForm = () => {
 
       <div className='mt-12'>
         <button
-          type='button'
+          type='submit'
           className='w-full cursor-pointer shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none'
         >
           Log in
