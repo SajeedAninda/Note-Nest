@@ -1,13 +1,25 @@
+'use client'
 import React from 'react';
 
 const page = () => {
+    let handleRegisterSubmit = e => {
+        e.preventDefault();
+        let firstName = e.target.name.value;
+        let lastName = e.target.lname.value;
+        let fullName = firstName + ' ' + lastName;
+        let email = e.target.email.value;
+        let password = e.target.password.value;
+        let imgUrl = e.target.imgUrl.value;
+        console.log({ fullName, email, password, imgUrl })
+    }
+
     return (
         <div className="max-w-4xl max-sm:max-w-lg mx-auto p-6 mt-6">
             <div className="text-center mb-12 sm:mb-16">
                 <h4 className="text-[#242627] text-[30px] font-bold mt-6">Sign up to use Note-Nest</h4>
             </div>
 
-            <form>
+            <form onSubmit={handleRegisterSubmit}>
                 <div className="grid sm:grid-cols-2 gap-8">
                     <div>
                         <label className="text-[#242627] text-sm font-medium mb-2 block">First Name</label>

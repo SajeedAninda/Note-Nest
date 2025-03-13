@@ -1,6 +1,5 @@
 'use client'
 import React, { createContext, useEffect, useState } from 'react'
-import { app } from '../firebase.config'
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -10,6 +9,7 @@ import {
   signInWithPopup,
   signOut
 } from 'firebase/auth'
+import { app } from './firebase.config'
 
 const googleProvider = new GoogleAuthProvider()
 
