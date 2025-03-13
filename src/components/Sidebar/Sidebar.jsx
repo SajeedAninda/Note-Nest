@@ -5,7 +5,7 @@ import { PiTrashFill } from "react-icons/pi";
 
 const Sidebar = () => {
   return (
-    <div className=' bg-white h-full mt-6 space-y-8'>
+    <div className=' bg-white h-full pt-6 space-y-8'>
       <div className='flex items-center gap-3 hover:opacity-60 cursor-pointer transition-all duration-150'>
         <MdNoteAdd className='text-[#242627] text-[25px] font-bold' />
         <p className='text-[#242627] text-[20px] font-semibold'>New Note</p>
