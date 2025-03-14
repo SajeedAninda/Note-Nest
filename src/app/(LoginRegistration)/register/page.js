@@ -1,4 +1,5 @@
 'use client'
+import SocialLogin from '@/components/Authentication/SocialLogin';
 import useAuth from '@/components/Hooks/useAuth';
 import useAxiosInstance from '@/components/Hooks/useAxiosInstance';
 import { useRouter } from "next/navigation";
@@ -54,7 +55,7 @@ const page = () => {
     }
 
     return (
-        <div className="max-w-4xl max-sm:max-w-lg mx-auto p-6 mt-6">
+        <div className="max-w-4xl max-sm:max-w-lg mx-auto p-6 mt-2">
             <div className="text-center mb-12 sm:mb-16">
                 <h4 className="text-[#242627] text-[30px] font-bold mt-6">Sign up to use Note-Nest</h4>
             </div>
@@ -84,12 +85,14 @@ const page = () => {
                     <input name="imgUrl" type="text" className="bg-slate-100 w-full text-[#242627] text-sm px-4 py-3 rounded focus:bg-transparent outline-blue-500 transition-all" placeholder="Enter Image Url" required/>
                 </div>
 
-                <div className="mt-12">
+                <div className="mt-6">
                     <button type="submit" className="cursor-pointer mx-auto block py-4 text-[18px] px-12 text-sm font-medium tracking-wider rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
                         Sign up
                     </button>
                 </div>
             </form>
+
+            <SocialLogin></SocialLogin>
         </div>
     );
 };
