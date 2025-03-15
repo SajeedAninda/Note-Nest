@@ -20,4 +20,5 @@ const useCurrentUserData = () => {
   return { userData, isUserLoading }
 }
 
+
 export default useCurrentUserData
