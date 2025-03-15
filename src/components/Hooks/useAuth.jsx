@@ -1,4 +1,4 @@
-'use clint'
+'use client'
 import React, { useContext } from 'react'
 import { AuthContext } from '../Authentication/AuthProvider'
 

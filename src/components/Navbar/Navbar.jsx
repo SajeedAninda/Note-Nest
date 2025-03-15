@@ -1,10 +1,15 @@
+'use client'
 import React from 'react'
 import logo from '@/assets/note-nest-logo.jpg'
 import Image from 'next/image'
 import { CiSearch } from 'react-icons/ci'
 import Link from 'next/link'
+import useCurrentUserData from '../Hooks/useCurrentUserData'
 
 const Navbar = () => {
+  let userData = useCurrentUserData()
+  console.log(userData)
+
   return (
     <div className='bg-white'>
       <div className='px-6 lg:px-0 h-fit lg:h-[14vh] flex items-center'>
@@ -21,7 +26,10 @@ const Navbar = () => {
               placeholder='Search Your Notes By Name'
             />
           </div>
-          <Link href={"/login"} className='relative cursor-pointer inline-flex items-center justify-center px-12 py-3 overflow-hidden tracking-tighter text-white bg-[#242627] rounded-md group group'>
+          <Link
+            href={'/login'}
+            className='relative cursor-pointer inline-flex items-center justify-center px-12 py-3 overflow-hidden tracking-tighter text-white bg-[#242627] rounded-md group group'
+          >
             <span className='absolute w-0 h-0 transition-all duration-500 ease-out bg-[#f7f8fa] rounded-full group-hover:w-56 group-hover:h-56 '></span>
             <span className='absolute bottom-0 left-0 h-full -ml-2'>
               <svg
@@ -52,7 +60,9 @@ const Navbar = () => {
               </svg>
             </span>
             <span className='absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-200'></span>
-            <span className='relative text-base font-semibold group-hover:text-[#242627]'>Login</span>
+            <span className='relative text-base font-semibold group-hover:text-[#242627]'>
+              Login
+            </span>
           </Link>
         </div>
       </div>
