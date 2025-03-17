@@ -19,9 +19,9 @@ const Navbar = () => {
   return (
     <div className='bg-white'>
       <div className='px-6 lg:px-0 h-fit lg:h-[14vh] flex items-center'>
-        <div className='w-[20%]'>
+        <Link href={"/"} className='w-[20%] cursor-pointer'>
           <Image width={190} height={50} src={logo} alt='Logo' />
-        </div>
+        </Link>
         <div className='w-[80%] flex justify-between items-center'>
           <h1 className='text-[#242627] text-[24px] font-bold'>My Notes</h1>
           <div className='relative'>
