@@ -91,6 +91,8 @@ const NewNote = () => {
     }
   }
 
+  const maxLength = 150; // Set the max character limit
+
   return (
     <div>
       <div className='w-full'>
@@ -170,8 +172,12 @@ const NewNote = () => {
           value={noteDescription}
           onChange={e => setNoteDescription(e.target.value)}
           placeholder='Write Down Your Note'
+          maxLength={maxLength}
           className='mt-2 block w-full px-3 py-2 border rounded-md border-[#242627] focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[42px]'
         />
+        <div className='text-right mt-2 text-gray-600'>
+          {maxLength - noteDescription.length} characters left
+        </div>
       </div>
 
       <button onClick={handleAddNewNote} className='w-full py-3 mt-6 bg-[#242627] cursor-pointer text-white font-semibold rounded-md hover:bg-gray-700 transition-all'>

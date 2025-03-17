@@ -13,9 +13,9 @@ const page = () => {
                     <Sidebar />
                 </div>
 
-                <div className="w-4/5 py-12 flex-grow">
+                <div className="w-4/5 pb-12 flex-grow">
                     <h1 className='text-[#242627] font-bold text-[30px] text-center'>Add New Note</h1>
-                    <div className='mt-10'>
+                    <div className='mt-1'>
                         <NewNote></NewNote>
                     </div>
                 </div>
