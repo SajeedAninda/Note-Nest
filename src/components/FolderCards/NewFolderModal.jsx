@@ -15,6 +15,9 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import useAuth from '../Hooks/useAuth'
+import toast from 'react-hot-toast'
+import useAxiosInstance from '../Hooks/useAxiosInstance'
 
 const colors = [
   { name: 'Red', hex: '#FF4136' },
@@ -28,21 +31,64 @@ const colors = [
 ]
 
 const NewFolderModal = ({ onClose }) => {
+  const { loggedInUser } = useAuth()
+  const axiosInstance = useAxiosInstance()
+  const userEmail = loggedInUser?.email
   const [folderName, setFolderName] = useState('')
   const [selectedColor, setSelectedColor] = useState('')
   const [isOpen, setIsOpen] = useState(true)
   const today = new Date().toISOString().split('T')[0]
 
+  const handleAddFolder = async () => {
+    if (!folderName) {
+      return toast.error('Please enter a folder name.')
+    }
+
+    if (!selectedColor) {
+      return toast.error('Please select a folder color.')
+    }
+    let loadingToast = toast.loading('Adding Folder')
+
+    const folderDetails = {
+      folderName,
+      selectedColor,
+      userEmail,
+      folderCreation: today,
+      folderNotes: []
+    }
+
+    try {
+      const response = await axiosInstance.post('/addNoteFolder', folderDetails)
+
+      if (response.data.insertedId) {
+        toast.success('Folder added successfully!')
+        toast.dismiss(loadingToast)
+        setIsOpen(false)
+        onClose()
+      } else {
+        toast.error('Failed to add folder. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error adding folder:', error)
+      toast.error('Failed to add folder. Please try again.')
+    }
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
       <DialogContent className='w-[500px] py-12'>
         <DialogHeader>
-          <DialogTitle className="text-[#242627]">Create New Folder</DialogTitle>
+          <DialogTitle className='text-[#242627]'>
+            Create New Folder
+          </DialogTitle>
         </DialogHeader>
 
         <div className='space-y-4'>
           <div>
-            <label htmlFor='folder-name' className='block text-sm font-medium text-[#242627]'>
+            <label
+              htmlFor='folder-name'
+              className='block text-sm font-medium text-[#242627]'
+            >
               Folder Name
             </label>
             <input
@@ -89,10 +135,7 @@ const NewFolderModal = ({ onClose }) => {
           </div>
 
           <button
-            onClick={() => {
-              setIsOpen(false)
-              onClose()
-            }}
+            onClick={handleAddFolder}
             className='w-full py-2 mt-4 bg-[#242627] cursor-pointer text-white font-semibold rounded-md hover:bg-gray-700 transition-all'
           >
             Create Folder
