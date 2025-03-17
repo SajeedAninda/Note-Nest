@@ -4,9 +4,33 @@ import { FaNoteSticky } from 'react-icons/fa6'
 import { BsThreeDots } from 'react-icons/bs'
 import { FaFolderPlus } from 'react-icons/fa6'
 import NewFolderModal from './NewFolderModal'
+import useAuth from '../Hooks/useAuth'
+import useAxiosInstance from '../Hooks/useAxiosInstance'
+import { useQuery } from '@tanstack/react-query'
 
 const FolderCards = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { loggedInUser } = useAuth()
+  const currentUserEmail = loggedInUser?.email
+  const axiosInstance = useAxiosInstance()
+
+  const {
+    data: folderData,
+    isLoading: isFolderLoading,
+    refetch
+  } = useQuery({
+    queryKey: ['folderData', currentUserEmail],
+    queryFn: async () => {
+      if (!currentUserEmail) return []
+      const response = await axiosInstance.get(
+        `/getFolders?email=${currentUserEmail}`
+      )
+      return response.data
+    },
+    enabled: !!currentUserEmail
+  })
+
+  console.log(folderData)
 
   return (
     <div>
@@ -65,7 +89,13 @@ const FolderCards = () => {
           </div>
         </div>
       </div>
-      {isModalOpen && <NewFolderModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <NewFolderModal
+          folderData={folderData}
+          refetch={refetch}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   )
 }

@@ -30,7 +30,7 @@ const colors = [
   { name: 'Teal', hex: '#39CCCC' }
 ]
 
-const NewFolderModal = ({ onClose }) => {
+const NewFolderModal = ({ folderData, refetch, onClose }) => {
   const { loggedInUser } = useAuth()
   const axiosInstance = useAxiosInstance()
   const userEmail = loggedInUser?.email
@@ -63,6 +63,7 @@ const NewFolderModal = ({ onClose }) => {
       if (response.data.insertedId) {
         toast.success('Folder added successfully!')
         toast.dismiss(loadingToast)
+        refetch()
         setIsOpen(false)
         onClose()
       } else {
