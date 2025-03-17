@@ -10,6 +10,7 @@ import {
 import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
 const NewNote = () => {
   const [noteName, setNoteName] = useState('')
@@ -47,6 +48,49 @@ const NewNote = () => {
     enabled: !!currentUserEmail
   })
 
+  let date = new Date()
+
+  const handleAddNewNote = async () => {
+    if (!noteName) {
+      return toast.error('Please enter a Note name.')
+    }
+
+    if (!selectedColor) {
+      return toast.error('Please select a Note color.')
+    }
+
+    if (!noteDescription) {
+      return toast.error('Please enter a Note Description.')
+    }
+
+    let loadingToast = toast.loading('Adding Note')
+
+    const noteDetails = {
+      noteName,
+      selectedColor,
+      noteDescription,
+      notefolder: selectedFolder,
+      userEmail: currentUserEmail,
+      noteCreation: date
+    }
+
+    console.log(noteDetails)
+
+    try {
+      const response = await axiosInstance.post('/addNote', noteDetails)
+
+      if (response.data.insertedId) {
+        toast.success('Note added successfully!')
+        toast.dismiss(loadingToast)
+      } else {
+        toast.error('Failed to add note. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error adding note:', error)
+      toast.error('Failed to add note. Please try again.')
+    }
+  }
+
   return (
     <div>
       <div className='w-full'>
@@ -54,7 +98,7 @@ const NewNote = () => {
           htmlFor='note-name'
           className='block text-[18px] font-semibold mb-2 text-[#242627]'
         >
-          Folder Name
+          Note Name
         </label>
         <input
           id='note-name'
@@ -130,7 +174,7 @@ const NewNote = () => {
         />
       </div>
 
-      <button className='w-full py-3 mt-6 bg-[#242627] cursor-pointer text-white font-semibold rounded-md hover:bg-gray-700 transition-all'>
+      <button onClick={handleAddNewNote} className='w-full py-3 mt-6 bg-[#242627] cursor-pointer text-white font-semibold rounded-md hover:bg-gray-700 transition-all'>
         Add New Note
       </button>
     </div>
