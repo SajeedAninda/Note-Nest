@@ -41,14 +41,20 @@ const FolderCards = () => {
     return `rgb(${r}, ${g}, ${b})`
   }
 
+  const sortedFolders = [...(folderData || [])].sort(
+    (a, b) => new Date(b.folderCreation) - new Date(a.folderCreation)
+  )
+
+  const latestFolders = sortedFolders.slice(0, 3)
+
   return (
     <div>
       <div className='flex gap-6 items-center'>
         <div className='w-[75%]'>
           <div className='grid grid-cols-3 gap-6'>
-            {folderData?.map(folder => {
+            {latestFolders?.map(folder => {
               const folderBgColor = folder?.selectedColor || '#76dd5d'
-              const iconColor = darkenColor(folderBgColor, 30) 
+              const iconColor = darkenColor(folderBgColor, 30)
 
               return (
                 <div
