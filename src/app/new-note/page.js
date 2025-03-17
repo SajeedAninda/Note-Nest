@@ -1,5 +1,6 @@
 import Discover from '@/components/Discover/Discover';
 import Navbar from '@/components/Navbar/Navbar';
+import NewNote from '@/components/NewNote/NewNote';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import React from 'react';
 
@@ -12,8 +13,11 @@ const page = () => {
                     <Sidebar />
                 </div>
 
-                <div className="w-4/5 flex justify-center py-12 flex-grow">
-                    <h1>Add New Note</h1>
+                <div className="w-4/5 py-12 flex-grow">
+                    <h1 className='text-[#242627] font-bold text-[30px] text-center'>Add New Note</h1>
+                    <div className='mt-10'>
+                        <NewNote></NewNote>
+                    </div>
                 </div>
             </div>
         </div>
