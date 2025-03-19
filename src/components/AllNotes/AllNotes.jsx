@@ -43,13 +43,11 @@ const AllNotes = () => {
     (a, b) => new Date(b.noteCreation) - new Date(a.noteCreation)
   )
 
-  const latestNotes = sortedNotes.slice(0, 2)
-
   return (
     <div className='flex mt-6 pb-6 gap-6 items-center'>
       <div className='w-full'>
         <div className='grid grid-cols-3 gap-6'>
-          {latestNotes?.map(note => (
+          {sortedNotes?.map(note => (
             <div
               key={note._id}
               className='card rounded-lg px-6 py-4'

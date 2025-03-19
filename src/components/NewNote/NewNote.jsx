@@ -11,6 +11,7 @@ import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 const NewNote = () => {
   const [noteName, setNoteName] = useState('')
@@ -20,6 +21,7 @@ const NewNote = () => {
   const { loggedInUser } = useAuth()
   const currentUserEmail = loggedInUser?.email
   const axiosInstance = useAxiosInstance()
+  const router = useRouter();
 
   const colors = [
     { name: 'Red', hex: '#FF4136' },
@@ -82,6 +84,7 @@ const NewNote = () => {
       if (response.data.insertedId) {
         toast.success('Note added successfully!')
         toast.dismiss(loadingToast)
+        router.push("/")
       } else {
         toast.error('Failed to add note. Please try again.')
       }
