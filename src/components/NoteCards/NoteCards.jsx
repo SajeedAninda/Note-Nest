@@ -6,6 +6,8 @@ import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
+import Swal from 'sweetalert2'
+import toast from 'react-hot-toast'
 
 const NoteCards = () => {
   const { loggedInUser } = useAuth()
@@ -47,6 +49,28 @@ const NoteCards = () => {
 
   const lastestNotes = sortedNotes.slice(0, 2)
 
+  const handleNoteDelete = async id => {
+    Swal.fire({
+      title: 'Do you want to delete this Note?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#242627',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async result => {
+      if (result.isConfirmed) {
+        const { data } = await axiosInstance.delete(`/noteDelete/${id}`)
+        if (data.deletedCount > 0) {
+          refetch()
+          toast.success('Deleted!', 'Your Note has been deleted.')
+        } else {
+          toast.error('Error!', 'Failed to delete Note.')
+        }
+      }
+    })
+  }
+
   return (
     <div className='flex mt-6 pb-6 gap-6 items-center'>
       <div className='w-[75%]'>
@@ -74,8 +98,16 @@ const NoteCards = () => {
                   {note.noteName}
                 </h2>
                 <div className='flex gap-4'>
-                  <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
-                  <RiFileEditFill className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                  <div
+                    onClick={() => {
+                      handleNoteDelete(note?._id)
+                    }}
+                  >
+                    <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                  </div>
+                  <div>
+                    <RiFileEditFill className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                  </div>
                 </div>
               </div>
               <p className='text-[#242627] font-normal mt-3 w-full text-[18px]'>
