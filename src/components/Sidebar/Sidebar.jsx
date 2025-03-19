@@ -12,10 +12,10 @@ const Sidebar = () => {
         <p className='text-[#242627] text-[20px] font-semibold'>New Note</p>
       </Link>
 
-      <div className='flex items-center gap-3 hover:opacity-60 cursor-pointer transition-all duration-150'>
+      <Link href={"/all-notes"} className='flex items-center gap-3 hover:opacity-60 cursor-pointer transition-all duration-150'>
         <MdStickyNote2 className='text-[#242627] text-[25px] font-bold' />
         <p className='text-[#242627] text-[20px] font-semibold'>All Notes</p>
-      </div>
+      </Link>
 
       <div className='flex items-center gap-3 hover:opacity-60 cursor-pointer transition-all duration-150'>
         <FaFileArchive className='text-[#242627] text-[25px] font-bold' />
