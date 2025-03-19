@@ -49,7 +49,7 @@ const NoteCards = () => {
 
   const lastestNotes = sortedNotes.slice(0, 2)
 
-  const handleNoteDelete = async id => {
+  const handleNoteDelete = async note => {
     Swal.fire({
       title: 'Do you want to delete this Note?',
       text: "You won't be able to revert this!",
@@ -60,12 +60,23 @@ const NoteCards = () => {
       confirmButtonText: 'Yes, delete it!'
     }).then(async result => {
       if (result.isConfirmed) {
-        const { data } = await axiosInstance.delete(`/noteDelete/${id}`)
-        if (data.deletedCount > 0) {
-          refetch()
-          toast.success('Deleted!', 'Your Note has been deleted.')
+        const deleteResponse = await axiosInstance.delete(
+          `/noteDelete/${note._id}`
+        )
+
+        if (deleteResponse.data.deletedCount > 0) {
+          toast.success('Note deleted successfully!')
+
+          const trashResponse = await axiosInstance.post('/addToTrash', note)
+
+          if (trashResponse.data.insertedId) {
+            toast.success('Note moved to Trash!')
+            refetch()
+          } else {
+            toast.error('Failed to move note to Trash.')
+          }
         } else {
-          toast.error('Error!', 'Failed to delete Note.')
+          toast.error('Error! Failed to delete Note.')
         }
       }
     })
@@ -100,7 +111,7 @@ const NoteCards = () => {
                 <div className='flex gap-4'>
                   <div
                     onClick={() => {
-                      handleNoteDelete(note?._id)
+                      handleNoteDelete(note)
                     }}
                   >
                     <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
