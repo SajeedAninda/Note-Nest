@@ -1,10 +1,11 @@
 'use client'
 import React from 'react'
 import { RiFileEditFill } from 'react-icons/ri'
-import { MdNoteAdd } from 'react-icons/md'
+import { MdDelete, MdNoteAdd } from 'react-icons/md'
 import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
 
 const NoteCards = () => {
   const { loggedInUser } = useAuth()
@@ -62,13 +63,20 @@ const NoteCards = () => {
               }}
             >
               <p className='text-[#242627] font-bold text-[12px]'>
-                {new Date(note.noteCreation).toLocaleDateString()} <span className='px-2'>|</span> {new Date(note.noteCreation).toLocaleTimeString()}<span className='px-2'>|</span>{(note.notefolder)}
+                {new Date(note.noteCreation).toLocaleDateString()}{' '}
+                <span className='px-2'>|</span>{' '}
+                {new Date(note.noteCreation).toLocaleTimeString()}
+                <span className='px-2'>|</span>
+                {note.notefolder}
               </p>
               <div className='flex justify-between items-center mt-5 pb-3 border-b-2 border-[#242627]'>
                 <h2 className='text-[#242627] font-bold text-[20px]'>
                   {note.noteName}
                 </h2>
-                <RiFileEditFill className='text-[#242627] font-bold text-[25px]' />
+                <div className='flex gap-4'>
+                  <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                  <RiFileEditFill className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                </div>
               </div>
               <p className='text-[#242627] font-normal mt-3 w-full text-[18px]'>
                 {note.noteDescription}
@@ -79,12 +87,14 @@ const NoteCards = () => {
       </div>
 
       <div className='w-[25%] p-10'>
-        <div className='border-2 border-dotted flex-col text-center place-items-center justify-center items-center p-6 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-150'>
-          <MdNoteAdd className='text-center text-[#242627] font-bold text-[30px]' />
-          <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
-            New <br /> Note
-          </h2>
-        </div>
+        <Link href={'/new-note'}>
+          <div className='w-full border-2 border-dotted flex-col text-center place-items-center justify-center items-center p-6 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-150'>
+            <MdNoteAdd className='text-center text-[#242627] font-bold text-[30px]' />
+            <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
+              New <br /> Note
+            </h2>
+          </div>
+        </Link>
       </div>
     </div>
   )
