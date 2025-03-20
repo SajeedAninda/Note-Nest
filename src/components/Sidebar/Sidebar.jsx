@@ -3,6 +3,7 @@ import { MdNoteAdd, MdStickyNote2 } from 'react-icons/md'
 import { FaFileArchive } from 'react-icons/fa'
 import { PiTrashFill } from 'react-icons/pi'
 import Link from 'next/link'
+import { FaFolderOpen } from 'react-icons/fa6'
 
 const Sidebar = () => {
   return (
@@ -23,10 +24,13 @@ const Sidebar = () => {
         <p className='text-[#242627] text-[20px] font-semibold'>All Notes</p>
       </Link>
 
-      <div className='flex items-center gap-3 hover:opacity-60 cursor-pointer transition-all duration-150'>
-        <FaFileArchive className='text-[#242627] text-[25px] font-bold' />
-        <p className='text-[#242627] text-[20px] font-semibold'>Archives</p>
-      </div>
+      <Link
+        href={'/all-folders'}
+        className='flex items-center gap-3 hover:opacity-60 cursor-pointer transition-all duration-150'
+      >
+        <FaFolderOpen className='text-[#242627] text-[25px] font-bold' />
+        <p className='text-[#242627] text-[20px] font-semibold'>All Folders</p>
+      </Link>
 
       <Link
         href={'/trash'}
