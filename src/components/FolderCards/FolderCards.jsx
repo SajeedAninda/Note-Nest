@@ -6,6 +6,8 @@ import NewFolderModal from './NewFolderModal'
 import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
+
 
 const FolderCards = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -57,25 +59,26 @@ const FolderCards = () => {
               const iconColor = darkenColor(folderBgColor, 30)
 
               return (
-                <div
-                  key={folder?._id}
-                  className='card rounded-lg px-6 py-4 cursor-pointer hover:opacity-70 transition-all duration-150'
-                  style={{ backgroundColor: folderBgColor }}
-                >
-                  <div className='flex justify-between items-center'>
-                    <FaNoteSticky
-                      className='text-[40px]'
-                      style={{ color: iconColor }}
-                    />
-                    <BsThreeDots className='text-[20px] text-[#242627] cursor-pointer' />
+                <Link href={`/folderDetails/${folder?._id}`} key={folder?._id}>
+                  <div
+                    className='card h-[200px] rounded-lg px-6 py-4 cursor-pointer hover:opacity-70 transition-all duration-150'
+                    style={{ backgroundColor: folderBgColor }}
+                  >
+                    <div className='flex justify-between items-center'>
+                      <FaNoteSticky
+                        className='text-[40px]'
+                        style={{ color: iconColor }}
+                      />
+                      <BsThreeDots className='text-[20px] text-[#242627] cursor-pointer' />
+                    </div>
+                    <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
+                      {folder?.folderName}
+                    </h2>
+                    <h2 className='text-[#242627] font-semibold text-[16px] mt-3'>
+                      {folder?.folderCreation}
+                    </h2>
                   </div>
-                  <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
-                    {folder?.folderName}
-                  </h2>
-                  <h2 className='text-[#242627] font-semibold text-[16px] mt-3'>
-                    {folder?.folderCreation}
-                  </h2>
-                </div>
+                </Link>
               )
             })}
           </div>
