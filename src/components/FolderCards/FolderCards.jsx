@@ -1,7 +1,6 @@
 'use client'
 import React, { useState } from 'react'
 import { FaNoteSticky, FaFolderPlus } from 'react-icons/fa6'
-import { BsThreeDots } from 'react-icons/bs'
 import NewFolderModal from './NewFolderModal'
 import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
@@ -69,7 +68,6 @@ const FolderCards = () => {
                         className='text-[40px]'
                         style={{ color: iconColor }}
                       />
-                      <BsThreeDots className='text-[20px] text-[#242627] cursor-pointer' />
                     </div>
                     <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
                       {folder?.folderName}

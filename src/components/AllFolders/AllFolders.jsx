@@ -4,7 +4,6 @@ import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
 import { FaNoteSticky } from 'react-icons/fa6'
-import { BsThreeDots } from 'react-icons/bs'
 import Link from 'next/link'
 
 const AllFolders = () => {
@@ -49,7 +48,7 @@ const AllFolders = () => {
     <div>
       <div className='flex gap-6 items-center'>
         <div className='w-full'>
-          <div className='grid grid-cols-3 gap-6'>
+          <div className='grid grid-cols-4 gap-6'>
             {sortedFolders?.map(folder => {
               const folderBgColor = folder?.selectedColor || '#76dd5d'
               const iconColor = darkenColor(folderBgColor, 30)
@@ -65,12 +64,12 @@ const AllFolders = () => {
                         className='text-[40px]'
                         style={{ color: iconColor }}
                       />
-                      <BsThreeDots className='text-[20px] text-[#242627] cursor-pointer' />
                     </div>
                     <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
                       {folder?.folderName}
                     </h2>
                     <h2 className='text-[#242627] font-semibold text-[16px] mt-3'>
+                      Created on: <br></br>
                       {folder?.folderCreation}
                     </h2>
                   </div>
