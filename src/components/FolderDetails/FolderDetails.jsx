@@ -23,20 +23,23 @@ const FolderDetails = ({ id }) => {
   })
 
   const {
-    data: folderData,
-    isLoading: isFolderLoading,
-    refetch: foldersRefetch
+    data: notesData,
+    isLoading: isNotesLoading,
+    refetch: notesRefetch
   } = useQuery({
-    queryKey: ['folderData', currentUserEmail],
+    queryKey: ['notesData', currentUserEmail],
     queryFn: async () => {
       if (!currentUserEmail) return []
       const response = await axiosInstance.get(
-        `/getFolders?email=${currentUserEmail}`
+        `/getNotes?email=${currentUserEmail}`
       )
       return response.data
     },
     enabled: !!currentUserEmail
   })
+
+  console.log(folderDetailedData)
+  console.log(notesData)
 
   return <div></div>
 }
