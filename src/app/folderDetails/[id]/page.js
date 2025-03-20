@@ -1,34 +1,28 @@
-"use client";
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import useAxiosInstance from "@/components/Hooks/useAxiosInstance";
+import FolderDetails from "@/components/FolderDetails/FolderDetails";
+import Navbar from "@/components/Navbar/Navbar";
+import Sidebar from "@/components/Sidebar/Sidebar";
 
 const Page = ({ params }) => {
-  const { id } = params;
-  const axiosInstance = useAxiosInstance();
+    const { id } = params;
 
-  const {
-    data: folderDetailedData,
-    isLoading: isFolderLoading,
-    refetch,
-  } = useQuery({
-    queryKey: ["folderDetailedData", id],
-    queryFn: async () => {
-      const response = await axiosInstance.get(`/getFolder/${id}`);
-      return response.data;
-    },
-    enabled: !!id, 
-  });
+    return (
+        <div className="w-full lg:w-[1270px] mx-auto">
+            <Navbar />
+            <div className="flex w-full">
+                <div className="w-1/5">
+                    <Sidebar />
+                </div>
 
-  if (isFolderLoading) return <p>Loading...</p>;
-
-  return (
-    <div>
-      <h1>Folder ID: {id}</h1>
-      <h2>Folder Name: {folderDetailedData?.folderName}</h2>
-      <p>Created On: {folderDetailedData?.folderCreation}</p>
-    </div>
-  );
+                <div className="w-4/5 pb-12 flex-grow">
+                    <h1 className='text-[#242627] font-bold text-[30px] text-center'>Folder Details</h1>
+                    <div className='mt-1'>
+                        <FolderDetails id={id}></FolderDetails>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Page;
