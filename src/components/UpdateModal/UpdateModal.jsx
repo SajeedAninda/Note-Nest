@@ -15,6 +15,7 @@ import {
 import { useQuery } from '@tanstack/react-query'
 import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
+import toast from 'react-hot-toast'
 
 const UpdateModal = ({ note, refetch, onClose }) => {
   const [isOpen, setIsOpen] = useState(true)
@@ -26,7 +27,7 @@ const UpdateModal = ({ note, refetch, onClose }) => {
   const currentUserEmail = loggedInUser?.email
   const axiosInstance = useAxiosInstance()
 
-  console.log(note?.noteName);
+  console.log(note?.noteName)
 
   const {
     data: folderData,
@@ -56,6 +57,48 @@ const UpdateModal = ({ note, refetch, onClose }) => {
   ]
 
   const maxLength = 150
+
+  const handleUpdateNote = async () => {
+    if (!noteName) {
+      return toast.error('Please enter a Note name.')
+    }
+
+    if (!selectedColor) {
+      return toast.error('Please select a Note color.')
+    }
+
+    if (!noteDescription) {
+      return toast.error('Please enter a Note Description.')
+    }
+
+    let loadingToast = toast.loading('Updating Note')
+
+    const noteDetails = {
+      noteName,
+      selectedColor,
+      noteDescription,
+      notefolder: selectedFolder
+    }
+
+    try {
+      const response = await axiosInstance.patch(
+        `/updateNote/${note?._id}`,
+        noteDetails
+      )
+
+      if (response.data.modifiedCount > 0) {
+        toast.success('Note updated successfully!')
+        toast.dismiss(loadingToast)
+        refetch()
+        onClose()
+      } else {
+        toast.error('Failed to Update note. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error updating note:', error)
+      toast.error('Failed to update note. Please try again.')
+    }
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
@@ -150,7 +193,10 @@ const UpdateModal = ({ note, refetch, onClose }) => {
             </div>
           </div>
 
-          <button className='w-full py-2 mt-4 bg-[#242627] cursor-pointer text-white font-semibold rounded-md hover:bg-gray-700 transition-all'>
+          <button
+            onClick={handleUpdateNote}
+            className='w-full py-2 mt-4 bg-[#242627] cursor-pointer text-white font-semibold rounded-md hover:bg-gray-700 transition-all'
+          >
             Update Note
           </button>
         </div>
