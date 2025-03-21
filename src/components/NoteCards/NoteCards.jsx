@@ -16,6 +16,7 @@ const NoteCards = () => {
   const currentUserEmail = loggedInUser?.email
   const axiosInstance = useAxiosInstance()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedNote, setSelectedNote] = useState(null)
 
   const {
     data: notesData,
@@ -32,6 +33,8 @@ const NoteCards = () => {
     },
     enabled: !!currentUserEmail
   })
+
+  console.log(notesData)
 
   const darkenColor = (hex, percent = 20) => {
     if (!hex) return '#4CAF50'
@@ -120,7 +123,12 @@ const NoteCards = () => {
                     >
                       <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
                     </div>
-                    <div onClick={() => setIsModalOpen(true)}>
+                    <div
+                      onClick={() => {
+                        setSelectedNote(note)
+                        setIsModalOpen(true)
+                      }}
+                    >
                       <RiFileEditFill className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
                     </div>
                   </div>
@@ -144,7 +152,16 @@ const NoteCards = () => {
           </Link>
         </div>
       </div>
-      {isModalOpen && <UpdateModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && selectedNote && (
+        <UpdateModal
+          note={selectedNote}
+          refetch={refetch}
+          onClose={() => {
+            setIsModalOpen(false)
+            setSelectedNote(null)
+          }}
+        />
+      )}
     </div>
   )
 }

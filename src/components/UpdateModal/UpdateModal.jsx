@@ -16,20 +16,22 @@ import { useQuery } from '@tanstack/react-query'
 import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
 
-const UpdateModal = ({ onClose }) => {
+const UpdateModal = ({ note, refetch, onClose }) => {
   const [isOpen, setIsOpen] = useState(true)
-  const [noteName, setNoteName] = useState('')
-  const [selectedFolder, setSelectedFolder] = useState('no-folder')
-  const [selectedColor, setSelectedColor] = useState('')
-  const [noteDescription, setNoteDescription] = useState('')
+  const [noteName, setNoteName] = useState(note?.noteName)
+  const [selectedFolder, setSelectedFolder] = useState(note?.notefolder)
+  const [selectedColor, setSelectedColor] = useState(note?.selectedColor)
+  const [noteDescription, setNoteDescription] = useState(note?.noteDescription)
   const { loggedInUser } = useAuth()
   const currentUserEmail = loggedInUser?.email
   const axiosInstance = useAxiosInstance()
 
+  console.log(note?.noteName);
+
   const {
     data: folderData,
     isLoading: isFolderLoading,
-    refetch
+    refetch: folderRefetch
   } = useQuery({
     queryKey: ['folderData', currentUserEmail],
     queryFn: async () => {
@@ -59,9 +61,7 @@ const UpdateModal = ({ onClose }) => {
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
       <DialogContent className='w-[550px] py-12'>
         <DialogHeader>
-          <DialogTitle className='text-[#242627]'>
-            Update Note
-          </DialogTitle>
+          <DialogTitle className='text-[#242627]'>Update Note</DialogTitle>
         </DialogHeader>
 
         <div className='space-y-4'>
