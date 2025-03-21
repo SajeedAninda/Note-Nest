@@ -94,7 +94,7 @@ const NewNote = () => {
     }
   }
 
-  const maxLength = 150; // Set the max character limit
+  const maxLength = 150;
 
   return (
     <div>
