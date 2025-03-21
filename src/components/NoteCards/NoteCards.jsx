@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { RiFileEditFill } from 'react-icons/ri'
 import { MdDelete, MdNoteAdd } from 'react-icons/md'
 import useAuth from '../Hooks/useAuth'
@@ -8,11 +8,14 @@ import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
 import toast from 'react-hot-toast'
+import NewFolderModal from '../FolderCards/NewFolderModal'
+import UpdateModal from '../UpdateModal/UpdateModal'
 
 const NoteCards = () => {
   const { loggedInUser } = useAuth()
   const currentUserEmail = loggedInUser?.email
   const axiosInstance = useAxiosInstance()
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const {
     data: notesData,
@@ -83,62 +86,65 @@ const NoteCards = () => {
   }
 
   return (
-    <div className='flex mt-6 pb-6 gap-6 items-center'>
-      <div className='w-[75%]'>
-        <div className='grid grid-cols-2 gap-6'>
-          {lastestNotes.map(note => (
-            <div
-              key={note._id}
-              className='card rounded-lg px-6 py-4'
-              style={{
-                backgroundColor: note.selectedColor,
-                cursor: 'pointer',
-                hover: 'opacity-70',
-                transition: 'all 0.15s'
-              }}
-            >
-              <p className='text-[#242627] font-bold text-[12px]'>
-                {new Date(note.noteCreation).toLocaleDateString()}{' '}
-                <span className='px-2'>|</span>{' '}
-                {new Date(note.noteCreation).toLocaleTimeString()}
-                <span className='px-2'>|</span>
-                {note.notefolder}
-              </p>
-              <div className='flex justify-between items-center mt-5 pb-3 border-b-2 border-[#242627]'>
-                <h2 className='text-[#242627] font-bold text-[20px]'>
-                  {note.noteName}
-                </h2>
-                <div className='flex gap-4'>
-                  <div
-                    onClick={() => {
-                      handleNoteDelete(note)
-                    }}
-                  >
-                    <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
-                  </div>
-                  <div>
-                    <RiFileEditFill className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+    <div>
+      <div className='flex mt-6 pb-6 gap-6 items-center'>
+        <div className='w-[75%]'>
+          <div className='grid grid-cols-2 gap-6'>
+            {lastestNotes.map(note => (
+              <div
+                key={note._id}
+                className='card rounded-lg px-6 py-4'
+                style={{
+                  backgroundColor: note.selectedColor,
+                  cursor: 'pointer',
+                  hover: 'opacity-70',
+                  transition: 'all 0.15s'
+                }}
+              >
+                <p className='text-[#242627] font-bold text-[12px]'>
+                  {new Date(note.noteCreation).toLocaleDateString()}{' '}
+                  <span className='px-2'>|</span>{' '}
+                  {new Date(note.noteCreation).toLocaleTimeString()}
+                  <span className='px-2'>|</span>
+                  {note.notefolder}
+                </p>
+                <div className='flex justify-between items-center mt-5 pb-3 border-b-2 border-[#242627]'>
+                  <h2 className='text-[#242627] font-bold text-[20px]'>
+                    {note.noteName}
+                  </h2>
+                  <div className='flex gap-4'>
+                    <div
+                      onClick={() => {
+                        handleNoteDelete(note)
+                      }}
+                    >
+                      <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                    </div>
+                    <div onClick={() => setIsModalOpen(true)}>
+                      <RiFileEditFill className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                    </div>
                   </div>
                 </div>
+                <p className='text-[#242627] font-normal mt-3 w-full text-[18px]'>
+                  {note.noteDescription}
+                </p>
               </div>
-              <p className='text-[#242627] font-normal mt-3 w-full text-[18px]'>
-                {note.noteDescription}
-              </p>
+            ))}
+          </div>
+        </div>
+
+        <div className='w-[25%] p-10'>
+          <Link href={'/new-note'}>
+            <div className='w-full border-2 border-dotted flex-col text-center place-items-center justify-center items-center p-6 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-150'>
+              <MdNoteAdd className='text-center text-[#242627] font-bold text-[30px]' />
+              <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
+                New <br /> Note
+              </h2>
             </div>
-          ))}
+          </Link>
         </div>
       </div>
-
-      <div className='w-[25%] p-10'>
-        <Link href={'/new-note'}>
-          <div className='w-full border-2 border-dotted flex-col text-center place-items-center justify-center items-center p-6 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-150'>
-            <MdNoteAdd className='text-center text-[#242627] font-bold text-[30px]' />
-            <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
-              New <br /> Note
-            </h2>
-          </div>
-        </Link>
-      </div>
+      {isModalOpen && <UpdateModal onClose={() => setIsModalOpen(false)} />}
     </div>
   )
 }
