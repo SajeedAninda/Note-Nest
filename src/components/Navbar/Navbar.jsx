@@ -1,3 +1,4 @@
+// components/Navbar.js
 'use client'
 import React from 'react'
 import logo from '@/assets/note-nest-logo.jpg'
@@ -7,19 +8,26 @@ import Link from 'next/link'
 import useCurrentUserData from '../Hooks/useCurrentUserData'
 import useAuth from '../Hooks/useAuth'
 import toast from 'react-hot-toast'
+import { useSearch } from '../SearchContext/SearchProvider'
+import { useRouter } from 'next/navigation'
 
 const Navbar = () => {
-  let { userData } = useCurrentUserData()
-  let { logOut } = useAuth()
+  const { userData } = useCurrentUserData()
+  const { logOut } = useAuth()
+  const { searchTerm, updateSearch } = useSearch() // Using SearchContext
+  let router = useRouter()
 
   const handleLogout = () => {
     logOut().then(() => toast.success('Logged Out of the account'))
+  }
+  const handleInputClick = () => {
+    router.push('/all-notes')
   }
 
   return (
     <div className='bg-white'>
       <div className='px-6 lg:px-0 h-fit lg:h-[14vh] flex items-center'>
-        <Link href={"/"} className='w-[20%] cursor-pointer'>
+        <Link href={'/'} className='w-[20%] cursor-pointer'>
           <Image width={190} height={50} src={logo} alt='Logo' />
         </Link>
         <div className='w-[80%] flex justify-between items-center'>
@@ -27,9 +35,12 @@ const Navbar = () => {
           <div className='relative'>
             <CiSearch className='text-[#767777] text-[27px] font-bold absolute left-4 top-3' />
             <input
+              onClick={handleInputClick}
               className='w-[400px] py-3 pl-14 pr-4 rounded-lg bg-[#ecedee] placeholder:text-[#767777] placeholder:text-[13px]'
               type='text'
               placeholder='Search Your Notes By Name'
+              value={searchTerm}
+              onChange={e => updateSearch(e.target.value)} // Update search term in context
             />
           </div>
           {userData ? (
@@ -41,10 +52,9 @@ const Navbar = () => {
                 height={50}
                 alt='User Profile Picture'
               />
-
               <button
                 onClick={handleLogout}
-                className='relative cursor-pointer inline-flex items-center justify-center px-12 py-3 overflow-hidden tracking-tighter text-white bg-[#242627] rounded-md group group'
+                className='relative cursor-pointer inline-flex items-center justify-center px-12 py-3 overflow-hidden tracking-tighter text-white bg-[#242627] rounded-md group'
               >
                 <span className='absolute w-0 h-0 transition-all duration-500 ease-out bg-[#f7f8fa] rounded-full group-hover:w-56 group-hover:h-56 '></span>
                 <span className='absolute bottom-0 left-0 h-full -ml-2'>
@@ -84,7 +94,7 @@ const Navbar = () => {
           ) : (
             <Link
               href={'/login'}
-              className='relative cursor-pointer inline-flex items-center justify-center px-12 py-3 overflow-hidden tracking-tighter text-white bg-[#242627] rounded-md group group'
+              className='relative cursor-pointer inline-flex items-center justify-center px-12 py-3 overflow-hidden tracking-tighter text-white bg-[#242627] rounded-md group'
             >
               <span className='absolute w-0 h-0 transition-all duration-500 ease-out bg-[#f7f8fa] rounded-full group-hover:w-56 group-hover:h-56 '></span>
               <span className='absolute bottom-0 left-0 h-full -ml-2'>
