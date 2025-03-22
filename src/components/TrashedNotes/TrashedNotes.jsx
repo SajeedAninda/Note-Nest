@@ -26,18 +26,6 @@ const TrashedNotes = () => {
     enabled: !!currentUserEmail
   })
 
-  const darkenColor = (hex, percent = 20) => {
-    if (!hex) return '#4CAF50'
-    let r = parseInt(hex.substring(1, 3), 16)
-    let g = parseInt(hex.substring(3, 5), 16)
-    let b = parseInt(hex.substring(5, 7), 16)
-
-    r = Math.max(0, Math.min(255, Math.floor(r * (1 - percent / 100))))
-    g = Math.max(0, Math.min(255, Math.floor(g * (1 - percent / 100))))
-    b = Math.max(0, Math.min(255, Math.floor(b * (1 - percent / 100))))
-
-    return `rgb(${r}, ${g}, ${b})`
-  }
 
   const sortedNotes = [...(TrashedNotesData || [])].sort(
     (a, b) => new Date(b.noteCreation) - new Date(a.noteCreation)
