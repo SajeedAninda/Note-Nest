@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FaNoteSticky, FaFolderPlus } from 'react-icons/fa6'
 import NewFolderModal from './NewFolderModal'
 import useAuth from '../Hooks/useAuth'
@@ -7,18 +7,14 @@ import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 
-
 const FolderCards = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedFilter, setSelectedFilter] = useState('Recent') 
   const { loggedInUser } = useAuth()
   const currentUserEmail = loggedInUser?.email
   const axiosInstance = useAxiosInstance()
 
-  const {
-    data: folderData,
-    isLoading: isFolderLoading,
-    refetch
-  } = useQuery({
+  const { data: folderData, refetch } = useQuery({
     queryKey: ['folderData', currentUserEmail],
     queryFn: async () => {
       if (!currentUserEmail) return []
@@ -29,6 +25,7 @@ const FolderCards = () => {
     },
     enabled: !!currentUserEmail
   })
+
   const darkenColor = (hex, percent = 20) => {
     if (!hex) return '#4CAF50'
     let r = parseInt(hex.substring(1, 3), 16)
@@ -42,45 +39,116 @@ const FolderCards = () => {
     return `rgb(${r}, ${g}, ${b})`
   }
 
+  const isToday = date => {
+    const today = new Date()
+    const folderDate = new Date(date)
+    return (
+      folderDate.getDate() === today.getDate() &&
+      folderDate.getMonth() === today.getMonth() &&
+      folderDate.getFullYear() === today.getFullYear()
+    )
+  }
+
+  const isThisWeek = date => {
+    const today = new Date()
+    const folderDate = new Date(date)
+    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()))
+    const lastDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 6))
+    return folderDate >= firstDayOfWeek && folderDate <= lastDayOfWeek
+  }
+
+  const isThisMonth = date => {
+    const today = new Date()
+    const folderDate = new Date(date)
+    return (
+      folderDate.getMonth() === today.getMonth() &&
+      folderDate.getFullYear() === today.getFullYear()
+    )
+  }
+
   const sortedFolders = [...(folderData || [])].sort(
     (a, b) => new Date(b.folderCreation) - new Date(a.folderCreation)
   )
 
-  const latestFolders = sortedFolders.slice(0, 3)
+  let filteredFolders = []
+
+  if (selectedFilter === 'Recent') {
+    filteredFolders = sortedFolders.slice(0, 3)
+  } else if (selectedFilter === 'Today') {
+    filteredFolders = sortedFolders.filter(folder => isToday(folder.folderCreation))
+  } else if (selectedFilter === 'This Week') {
+    filteredFolders = sortedFolders.filter(folder => isThisWeek(folder.folderCreation))
+  } else if (selectedFilter === 'This Month') {
+    filteredFolders = sortedFolders.filter(folder => isThisMonth(folder.folderCreation))
+  }
+
+  const formatDate = date => {
+    const folderDate = new Date(date)
+    return folderDate.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    })
+  }
 
   return (
     <div>
-      <div className='flex gap-6 items-center'>
+      <div className='flex mt-3 gap-3 items-center'>
+        {['Recent', 'Today', 'This Week', 'This Month'].map(filter => (
+          <button
+            key={filter}
+            onClick={() => setSelectedFilter(filter)}
+            className={`text-[#242627] cursor-pointer hover:opacity-70 font-semibold text-[18px] px-4 py-1 rounded-md 
+              ${selectedFilter === filter ? 'underline' : ''}`}
+          >
+            {filter}
+          </button>
+        ))}
+      </div>
+
+      <div className='flex gap-6 items-center mt-4'>
         <div className='w-[75%]'>
           <div className='grid grid-cols-3 gap-6'>
-            {latestFolders?.map(folder => {
-              const folderBgColor = folder?.selectedColor || '#76dd5d'
-              const iconColor = darkenColor(folderBgColor, 30)
+            {filteredFolders.length > 0 ? (
+              filteredFolders.map(folder => {
+                const folderBgColor = folder?.selectedColor || '#76dd5d'
+                const iconColor = darkenColor(folderBgColor, 30)
 
-              return (
-                <Link href={`/folderDetails/${folder?._id}`} key={folder?._id}>
-                  <div
-                    className='card h-[200px] rounded-lg px-6 py-4 cursor-pointer hover:opacity-70 transition-all duration-150'
-                    style={{ backgroundColor: folderBgColor }}
+                return (
+                  <Link
+                    href={`/folderDetails/${folder?._id}`}
+                    key={folder?._id}
                   >
-                    <div className='flex justify-between items-center'>
-                      <FaNoteSticky
-                        className='text-[40px]'
-                        style={{ color: iconColor }}
-                      />
+                    <div
+                      className='card h-[200px] rounded-lg px-6 py-4 cursor-pointer hover:opacity-70 transition-all duration-150'
+                      style={{ backgroundColor: folderBgColor }}
+                    >
+                      <div className='flex justify-between items-center'>
+                        <FaNoteSticky
+                          className='text-[40px]'
+                          style={{ color: iconColor }}
+                        />
+                      </div>
+                      <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
+                        {folder?.folderName}
+                      </h2>
+                      <h2 className='text-[#242627] font-semibold text-[16px] mt-3'>
+                        {formatDate(folder?.folderCreation)}
+                      </h2>
                     </div>
-                    <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
-                      {folder?.folderName}
-                    </h2>
-                    <h2 className='text-[#242627] font-semibold text-[16px] mt-3'>
-                      {folder?.folderCreation}
-                    </h2>
-                  </div>
-                </Link>
-              )
-            })}
+                  </Link>
+                )
+              })
+            ) : (
+              <div className='flex justify-center items-center'>
+                <p className='text-[#242627] font-bold text-center flex text-[20px]'>
+                  Folder Not Available
+                </p>
+              </div>
+            )}
           </div>
         </div>
+
         <div className='w-[25%] p-10'>
           <div
             onClick={() => setIsModalOpen(true)}
@@ -93,6 +161,8 @@ const FolderCards = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
       {isModalOpen && (
         <NewFolderModal
           folderData={folderData}
