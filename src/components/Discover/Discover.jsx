@@ -14,14 +14,6 @@ const Discover = () => {
 
       <div className='notes w-[full] h-full rounded-xl px-10 mt-3'>
         <h1 className='text-[#242627] font-bold text-[25px]'>Recent Notes</h1>
-        <div className='flex mt-3 gap-3 items-center'>
-          <p className='text-[#242627] font-semibold text-[18px] underline'>
-            Recent
-          </p>
-          <p className='text-[#242627] font-semibold text-[18px]'>Today</p>
-          <p className='text-[#242627] font-semibold text-[18px]'>This Week</p>
-          <p className='text-[#242627] font-semibold text-[18px]'>This Month</p>
-        </div>
         <div className='folderCards'>
           <NoteCards></NoteCards>
         </div>

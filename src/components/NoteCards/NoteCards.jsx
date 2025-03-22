@@ -8,7 +8,6 @@ import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
 import toast from 'react-hot-toast'
-import NewFolderModal from '../FolderCards/NewFolderModal'
 import UpdateModal from '../UpdateModal/UpdateModal'
 
 const NoteCards = () => {
@@ -17,6 +16,7 @@ const NoteCards = () => {
   const axiosInstance = useAxiosInstance()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedNote, setSelectedNote] = useState(null)
+  const [selectedFilter, setSelectedFilter] = useState('Recent') 
 
   const {
     data: notesData,
@@ -33,8 +33,6 @@ const NoteCards = () => {
     },
     enabled: !!currentUserEmail
   })
-
-  console.log(notesData)
 
   const darkenColor = (hex, percent = 20) => {
     if (!hex) return '#4CAF50'
@@ -53,7 +51,27 @@ const NoteCards = () => {
     (a, b) => new Date(b.noteCreation) - new Date(a.noteCreation)
   )
 
-  const lastestNotes = sortedNotes.slice(0, 2)
+  let filteredNotes = []
+
+  if (selectedFilter === 'Recent') {
+    filteredNotes = sortedNotes.slice(0, 2)
+  } else if (selectedFilter === 'Today') {
+    filteredNotes = sortedNotes.filter(note =>
+      new Date(note.noteCreation).toDateString() === new Date().toDateString()
+    )
+  } else if (selectedFilter === 'This Week') {
+    const startOfWeek = new Date()
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay())
+    filteredNotes = sortedNotes.filter(note =>
+      new Date(note.noteCreation) >= startOfWeek
+    )
+  } else if (selectedFilter === 'This Month') {
+    const startOfMonth = new Date()
+    startOfMonth.setDate(1)
+    filteredNotes = sortedNotes.filter(note =>
+      new Date(note.noteCreation) >= startOfMonth
+    )
+  }
 
   const handleNoteDelete = async note => {
     Swal.fire({
@@ -90,54 +108,75 @@ const NoteCards = () => {
 
   return (
     <div>
+      <div className='flex mt-3 gap-3 items-center'>
+        {['Recent', 'Today', 'This Week', 'This Month'].map(filter => (
+          <button
+            key={filter}
+            onClick={() => setSelectedFilter(filter)}
+            className={`text-[#242627] cursor-pointer hover:opacity-70 font-semibold text-[18px] px-4 py-1 rounded-md 
+              ${selectedFilter === filter ? 'underline' : ''}`}
+          >
+            {filter}
+          </button>
+        ))}
+      </div>
+
       <div className='flex mt-6 pb-6 gap-6 items-center'>
         <div className='w-[75%]'>
           <div className='grid grid-cols-2 gap-6'>
-            {lastestNotes.map(note => (
-              <div
-                key={note._id}
-                className='card rounded-lg px-6 py-4'
-                style={{
-                  backgroundColor: note.selectedColor,
-                  cursor: 'pointer',
-                  hover: 'opacity-70',
-                  transition: 'all 0.15s'
-                }}
-              >
-                <p className='text-[#242627] font-bold text-[12px]'>
-                  {new Date(note.noteCreation).toLocaleDateString()}{' '}
-                  <span className='px-2'>|</span>{' '}
-                  {new Date(note.noteCreation).toLocaleTimeString()}
-                  <span className='px-2'>|</span>
-                  {note.notefolder}
-                </p>
-                <div className='flex justify-between items-center mt-5 pb-3 border-b-2 border-[#242627]'>
-                  <h2 className='text-[#242627] font-bold text-[20px]'>
-                    {note.noteName}
-                  </h2>
-                  <div className='flex gap-4'>
-                    <div
-                      onClick={() => {
-                        handleNoteDelete(note)
-                      }}
-                    >
-                      <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
-                    </div>
-                    <div
-                      onClick={() => {
-                        setSelectedNote(note)
-                        setIsModalOpen(true)
-                      }}
-                    >
-                      <RiFileEditFill className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+            {filteredNotes.length > 0 ? (
+              filteredNotes.map(note => (
+                <div
+                  key={note._id}
+                  className='card rounded-lg px-6 py-4'
+                  style={{
+                    backgroundColor: note.selectedColor,
+                    cursor: 'pointer',
+                    hover: 'opacity-70',
+                    transition: 'all 0.15s'
+                  }}
+                >
+                  <p className='text-[#242627] font-bold text-[12px]'>
+                    {new Date(note.noteCreation).toLocaleDateString()}{' '}
+                    <span className='px-2'>|</span>{' '}
+                    {new Date(note.noteCreation).toLocaleTimeString()}
+                    <span className='px-2'>|</span>
+                    {note.notefolder}
+                  </p>
+                  <div className='flex justify-between items-center mt-5 pb-3 border-b-2 border-[#242627]'>
+                    <h2 className='text-[#242627] font-bold text-[20px]'>
+                      {note.noteName}
+                    </h2>
+                    <div className='flex gap-4'>
+                      <div
+                        onClick={() => {
+                          handleNoteDelete(note)
+                        }}
+                      >
+                        <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                      </div>
+                      <div
+                        onClick={() => {
+                          setSelectedNote(note)
+                          setIsModalOpen(true)
+                        }}
+                      >
+                        <RiFileEditFill className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                      </div>
                     </div>
                   </div>
+                  <p className='text-[#242627] font-normal mt-3 w-full text-[18px]'>
+                    {note.noteDescription}
+                  </p>
                 </div>
-                <p className='text-[#242627] font-normal mt-3 w-full text-[18px]'>
-                  {note.noteDescription}
+              ))
+            ) : (
+              <div className='flex justify-center items-center'>
+                <p className='text-[#242627] font-bold text-center text-[20px]'>
+                  No Notes Available
                 </p>
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -152,6 +191,7 @@ const NoteCards = () => {
           </Link>
         </div>
       </div>
+
       {isModalOpen && selectedNote && (
         <UpdateModal
           note={selectedNote}
