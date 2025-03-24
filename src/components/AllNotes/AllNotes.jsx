@@ -9,6 +9,7 @@ import toast from 'react-hot-toast'
 import UpdateModal from '../UpdateModal/UpdateModal'
 import { MdDelete } from 'react-icons/md'
 import { useSearch } from '../SearchContext/SearchProvider'
+import { Rings } from 'react-loader-spinner'
 
 const AllNotes = () => {
   const { loggedInUser } = useAuth()
@@ -82,60 +83,74 @@ const AllNotes = () => {
 
   return (
     <div>
+      {isNotesLoading && (
+        <div className='flex justify-center items-center'>
+          <Rings
+            visible={true}
+            height='80'
+            width='80'
+            color='#242627'
+            ariaLabel='rings-loading'
+            wrapperStyle={{}}
+            wrapperClass=''
+          />
+        </div>
+      )}
+
       <div className='flex mt-6 pb-6 gap-6 items-center'>
         <div className='w-full'>
           <div className='grid grid-cols-3 gap-6'>
-            {filteredNotes.length > 0 ? (
-              filteredNotes.map(note => (
-                <div
-                  key={note._id}
-                  className='card rounded-lg px-6 py-4'
-                  style={{
-                    backgroundColor: note.selectedColor,
-                    cursor: 'pointer',
-                    hover: 'opacity-70',
-                    transition: 'all 0.15s'
-                  }}
-                >
-                  <p className='text-[#242627] font-bold text-[12px]'>
-                    {new Date(note.noteCreation).toLocaleDateString()}{' '}
-                    <span className='px-2'>|</span>{' '}
-                    {new Date(note.noteCreation).toLocaleTimeString()}
-                    <span className='px-2'>|</span>
-                    {note.notefolder}
-                  </p>
-                  <div className='flex justify-between items-center mt-5 pb-3 border-b-2 border-[#242627]'>
-                    <h2 className='text-[#242627] font-bold text-[20px]'>
-                      {note.noteName}
-                    </h2>
-                    <div className='flex gap-4'>
-                      <div
-                        onClick={() => {
-                          handleNoteDelete(note)
-                        }}
-                      >
-                        <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
-                      </div>
-                      <div
-                        onClick={() => {
-                          setSelectedNote(note)
-                          setIsModalOpen(true)
-                        }}
-                      >
-                        <RiFileEditFill className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+            {filteredNotes.length > 0
+              ? filteredNotes.map(note => (
+                  <div
+                    key={note._id}
+                    className='card rounded-lg px-6 py-4'
+                    style={{
+                      backgroundColor: note.selectedColor,
+                      cursor: 'pointer',
+                      hover: 'opacity-70',
+                      transition: 'all 0.15s'
+                    }}
+                  >
+                    <p className='text-[#242627] font-bold text-[12px]'>
+                      {new Date(note.noteCreation).toLocaleDateString()}{' '}
+                      <span className='px-2'>|</span>{' '}
+                      {new Date(note.noteCreation).toLocaleTimeString()}
+                      <span className='px-2'>|</span>
+                      {note.notefolder}
+                    </p>
+                    <div className='flex justify-between items-center mt-5 pb-3 border-b-2 border-[#242627]'>
+                      <h2 className='text-[#242627] font-bold text-[20px]'>
+                        {note.noteName}
+                      </h2>
+                      <div className='flex gap-4'>
+                        <div
+                          onClick={() => {
+                            handleNoteDelete(note)
+                          }}
+                        >
+                          <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                        </div>
+                        <div
+                          onClick={() => {
+                            setSelectedNote(note)
+                            setIsModalOpen(true)
+                          }}
+                        >
+                          <RiFileEditFill className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
+                        </div>
                       </div>
                     </div>
+                    <p className='text-[#242627] font-normal mt-3 w-full text-[18px]'>
+                      {note.noteDescription}
+                    </p>
                   </div>
-                  <p className='text-[#242627] font-normal mt-3 w-full text-[18px]'>
-                    {note.noteDescription}
+                ))
+              : !isNotesLoading && (
+                  <p className='text-center text-lg font-semibold mt-6'>
+                    No notes available.
                   </p>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-lg font-semibold mt-6">
-                No notes found for "{searchTerm}"
-              </p>
-            )}
+                )}
           </div>
         </div>
       </div>
