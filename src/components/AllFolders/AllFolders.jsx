@@ -64,9 +64,9 @@ const AllFolders = () => {
           No folders available.
         </p>
       ) : (
-        <div className='flex gap-6 items-center'>
+        <div className='flex gap-6 px-4 lg:px-0 items-center'>
           <div className='w-full'>
-            <div className='grid grid-cols-4 gap-6'>
+            <div className='grid grid-cols-2 lg:grid-cols-4 gap-6'>
               {sortedFolders?.map(folder => {
                 const folderBgColor = folder?.selectedColor || '#76dd5d'
                 const iconColor = darkenColor(folderBgColor, 30)
