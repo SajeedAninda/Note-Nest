@@ -16,7 +16,7 @@ const NoteCards = () => {
   const axiosInstance = useAxiosInstance()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedNote, setSelectedNote] = useState(null)
-  const [selectedFilter, setSelectedFilter] = useState('Recent') 
+  const [selectedFilter, setSelectedFilter] = useState('Recent')
 
   const {
     data: notesData,
@@ -34,7 +34,6 @@ const NoteCards = () => {
     enabled: !!currentUserEmail
   })
 
-
   const sortedNotes = [...(notesData || [])].sort(
     (a, b) => new Date(b.noteCreation) - new Date(a.noteCreation)
   )
@@ -44,20 +43,21 @@ const NoteCards = () => {
   if (selectedFilter === 'Recent') {
     filteredNotes = sortedNotes.slice(0, 2)
   } else if (selectedFilter === 'Today') {
-    filteredNotes = sortedNotes.filter(note =>
-      new Date(note.noteCreation).toDateString() === new Date().toDateString()
+    filteredNotes = sortedNotes.filter(
+      note =>
+        new Date(note.noteCreation).toDateString() === new Date().toDateString()
     )
   } else if (selectedFilter === 'This Week') {
     const startOfWeek = new Date()
     startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay())
-    filteredNotes = sortedNotes.filter(note =>
-      new Date(note.noteCreation) >= startOfWeek
+    filteredNotes = sortedNotes.filter(
+      note => new Date(note.noteCreation) >= startOfWeek
     )
   } else if (selectedFilter === 'This Month') {
     const startOfMonth = new Date()
     startOfMonth.setDate(1)
-    filteredNotes = sortedNotes.filter(note =>
-      new Date(note.noteCreation) >= startOfMonth
+    filteredNotes = sortedNotes.filter(
+      note => new Date(note.noteCreation) >= startOfMonth
     )
   }
 
@@ -136,11 +136,7 @@ const NoteCards = () => {
                       {note.noteName}
                     </h2>
                     <div className='flex gap-4'>
-                      <div
-                        onClick={() => {
-                          handleNoteDelete(note)
-                        }}
-                      >
+                      <div onClick={() => handleNoteDelete(note)}>
                         <MdDelete className='text-[#242627] font-bold text-[25px] hover:opacity-70' />
                       </div>
                       <div
