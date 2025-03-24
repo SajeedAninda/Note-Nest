@@ -5,6 +5,7 @@ import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
 import { FaNoteSticky } from 'react-icons/fa6'
 import Link from 'next/link'
+import { Rings } from 'react-loader-spinner'
 
 const AllFolders = () => {
   const { loggedInUser } = useAuth()
@@ -46,39 +47,60 @@ const AllFolders = () => {
 
   return (
     <div>
-      <div className='flex gap-6 items-center'>
-        <div className='w-full'>
-          <div className='grid grid-cols-4 gap-6'>
-            {sortedFolders?.map(folder => {
-              const folderBgColor = folder?.selectedColor || '#76dd5d'
-              const iconColor = darkenColor(folderBgColor, 30)
+      {isFolderLoading ? (
+        <div className='flex justify-center items-center'>
+          <Rings
+            visible={true}
+            height='80'
+            width='80'
+            color='#242627'
+            ariaLabel='rings-loading'
+            wrapperStyle={{}}
+            wrapperClass=''
+          />
+        </div>
+      ) : sortedFolders.length === 0 ? (
+        <p className='text-center text-lg font-semibold mt-6'>
+          No folders available.
+        </p>
+      ) : (
+        <div className='flex gap-6 items-center'>
+          <div className='w-full'>
+            <div className='grid grid-cols-4 gap-6'>
+              {sortedFolders?.map(folder => {
+                const folderBgColor = folder?.selectedColor || '#76dd5d'
+                const iconColor = darkenColor(folderBgColor, 30)
 
-              return (
-                <Link href={`/folderDetails/${folder?._id}`} key={folder?._id}>
-                  <div
-                    className='card h-[200px] rounded-lg px-6 py-4 cursor-pointer hover:opacity-70 transition-all duration-150'
-                    style={{ backgroundColor: folderBgColor }}
+                return (
+                  <Link
+                    href={`/folderDetails/${folder?._id}`}
+                    key={folder?._id}
                   >
-                    <div className='flex justify-between items-center'>
-                      <FaNoteSticky
-                        className='text-[40px]'
-                        style={{ color: iconColor }}
-                      />
+                    <div
+                      className='card h-[200px] rounded-lg px-6 py-4 cursor-pointer hover:opacity-70 transition-all duration-150'
+                      style={{ backgroundColor: folderBgColor }}
+                    >
+                      <div className='flex justify-between items-center'>
+                        <FaNoteSticky
+                          className='text-[40px]'
+                          style={{ color: iconColor }}
+                        />
+                      </div>
+                      <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
+                        {folder?.folderName}
+                      </h2>
+                      <h2 className='text-[#242627] font-semibold text-[16px] mt-3'>
+                        Created on: <br></br>
+                        {folder?.folderCreation}
+                      </h2>
                     </div>
-                    <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
-                      {folder?.folderName}
-                    </h2>
-                    <h2 className='text-[#242627] font-semibold text-[16px] mt-3'>
-                      Created on: <br></br>
-                      {folder?.folderCreation}
-                    </h2>
-                  </div>
-                </Link>
-              )
-            })}
+                  </Link>
+                )
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

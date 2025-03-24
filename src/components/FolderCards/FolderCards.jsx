@@ -136,7 +136,7 @@ const FolderCards = () => {
                 />
             </div>
           ) : (
-            <div className='grid grid-cols-3 gap-6'>
+            <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
               {filteredFolders.length > 0 ? (
                 filteredFolders.map(folder => {
                   const folderBgColor = folder?.selectedColor || '#76dd5d'

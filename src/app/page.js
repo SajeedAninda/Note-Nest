@@ -7,11 +7,11 @@ export default function Home() {
     <div className="w-full lg:w-[1270px] mx-auto">
       <Navbar />
       <div className="flex w-full">
-        <div className="w-1/5">
+        <div className="w-1/5 hidden lg:block">
           <Sidebar />
         </div>
 
-        <div className="w-4/5 flex-grow">
+        <div className="w-full lg:w-4/5 flex-grow">
           <Discover></Discover>
         </div>
       </div>

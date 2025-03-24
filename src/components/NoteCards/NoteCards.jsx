@@ -111,7 +111,7 @@ const NoteCards = () => {
 
       <div className='flex mt-6 pb-6 gap-6 items-center'>
         <div className='w-[75%]'>
-          <div className='grid grid-cols-2 gap-6'>
+          <div className='grid-cols-1 lg:grid-cols-2 gap-6'>
             {filteredNotes.length > 0 ? (
               filteredNotes.map(note => (
                 <div
