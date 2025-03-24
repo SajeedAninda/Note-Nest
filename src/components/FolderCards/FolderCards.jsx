@@ -6,6 +6,7 @@ import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
+import { Rings } from 'react-loader-spinner'
 
 const FolderCards = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -119,12 +120,20 @@ const FolderCards = () => {
           </button>
         ))}
       </div>
-  
+
       <div className='flex gap-6 items-center mt-4'>
         <div className='w-[75%]'>
           {folderLoading ? (
             <div className='flex justify-center items-center'>
-              <p className='text-[#242627] font-bold text-[20px]'>Loading folders...</p>
+                <Rings
+                  visible={true}
+                  height='80'
+                  width='80'
+                  color='#242627'
+                  ariaLabel='rings-loading'
+                  wrapperStyle={{}}
+                  wrapperClass=''
+                />
             </div>
           ) : (
             <div className='grid grid-cols-3 gap-6'>
@@ -132,17 +141,25 @@ const FolderCards = () => {
                 filteredFolders.map(folder => {
                   const folderBgColor = folder?.selectedColor || '#76dd5d'
                   const iconColor = darkenColor(folderBgColor, 30)
-  
+
                   return (
-                    <Link href={`/folderDetails/${folder?._id}`} key={folder?._id}>
+                    <Link
+                      href={`/folderDetails/${folder?._id}`}
+                      key={folder?._id}
+                    >
                       <div
                         className='card h-[200px] rounded-lg px-6 py-4 cursor-pointer hover:opacity-70 transition-all duration-150'
                         style={{ backgroundColor: folderBgColor }}
                       >
                         <div className='flex justify-between items-center'>
-                          <FaNoteSticky className='text-[40px]' style={{ color: iconColor }} />
+                          <FaNoteSticky
+                            className='text-[40px]'
+                            style={{ color: iconColor }}
+                          />
                         </div>
-                        <h2 className='text-[#242627] font-bold text-[20px] mt-3'>{folder?.folderName}</h2>
+                        <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
+                          {folder?.folderName}
+                        </h2>
                         <h2 className='text-[#242627] font-semibold text-[16px] mt-3'>
                           {formatDate(folder?.folderCreation)}
                         </h2>
@@ -152,31 +169,38 @@ const FolderCards = () => {
                 })
               ) : (
                 <div className='flex justify-center items-center'>
-                  <p className='text-[#242627] font-bold text-[20px]'>No folders available</p>
+                  <p className='text-[#242627] font-bold text-[20px]'>
+                    No folders available
+                  </p>
                 </div>
               )}
             </div>
           )}
         </div>
-  
+
         <div className='w-[25%] p-10'>
           <div
             onClick={() => setIsModalOpen(true)}
             className='border-2 border-dotted flex-col text-center place-items-center justify-center items-center p-6 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-150'
           >
             <FaFolderPlus className='text-center text-[#242627] font-bold text-[20px]' />
-            <h2 className='text-[#242627] font-bold text-[20px] mt-3'>New Folder</h2>
+            <h2 className='text-[#242627] font-bold text-[20px] mt-3'>
+              New Folder
+            </h2>
           </div>
         </div>
       </div>
-  
+
       {/* Modal */}
       {isModalOpen && (
-        <NewFolderModal folderData={folderData} refetch={refetch} onClose={() => setIsModalOpen(false)} />
+        <NewFolderModal
+          folderData={folderData}
+          refetch={refetch}
+          onClose={() => setIsModalOpen(false)}
+        />
       )}
     </div>
   )
-  
 }
 
 export default FolderCards
