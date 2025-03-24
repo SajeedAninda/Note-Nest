@@ -97,9 +97,9 @@ const AllNotes = () => {
         </div>
       )}
 
-      <div className='flex mt-6 pb-6 gap-6 items-center'>
+      <div className='flex mt-6 pb-6 px-4 lg:px-0 gap-6 items-center'>
         <div className='w-full'>
-          <div className='grid grid-cols-3 gap-6'>
+          <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
             {filteredNotes.length > 0
               ? filteredNotes.map(note => (
                   <div
