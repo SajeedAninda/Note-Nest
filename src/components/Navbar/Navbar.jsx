@@ -111,18 +111,6 @@ const Navbar = () => {
                   </button>
                 </div>
 
-                <div className='relative mb-8'>
-                  <CiSearch className='text-[#767777] text-xl font-bold absolute left-4 top-3' />
-                  <input
-                    onClick={handleInputClick}
-                    className='w-full py-2 pl-10 pr-4 rounded-lg bg-[#ecedee] placeholder:text-[#767777] placeholder:text-xs'
-                    type='text'
-                    placeholder='Search Your Notes By Name'
-                    value={searchTerm}
-                    onChange={e => updateSearch(e.target.value)}
-                  />
-                </div>
-
                 <div className='flex flex-col space-y-6 flex-grow'>
                   <Link
                     href='/'
