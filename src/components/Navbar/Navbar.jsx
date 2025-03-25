@@ -37,7 +37,7 @@ const Navbar = () => {
 
   return (
     <div className='bg-white'>
-      <div className='px-6 lg:px-0 h-fit lg:h-[14vh] flex items-center justify-between lg:justify-start'>
+      <div className='px-6 lg:px-0 h-[14vh] flex items-center justify-between lg:justify-start'>
         <Link href={'/'} className='w-[190px] cursor-pointer'>
           <Image width={190} height={50} src={logo} alt='Logo' />
         </Link>
@@ -99,10 +99,10 @@ const Navbar = () => {
         {isSidebarOpen && (
           <>
             <div
-              className='fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden'
+              className='fixed inset-0 bg-black opacity-50 z-40 lg:hidden'
               onClick={toggleSidebar}
             ></div>
-            <div className='fixed inset-y-0 left-0 w-3/5 bg-white z-50 p-6 shadow-lg transform transition-transform lg:hidden'>
+            <div className='fixed inset-y-0 left-0 w-[65%] bg-white z-50 p-6 shadow-lg transform transition-transform lg:hidden'>
               <div className='flex flex-col h-full'>
                 <div className='flex justify-between items-center mb-8'>
                   <h1 className='text-[#242627] text-xl font-bold'>My Notes</h1>
