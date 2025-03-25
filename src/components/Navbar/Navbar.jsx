@@ -132,11 +132,32 @@ const Navbar = () => {
                     Home
                   </Link>
                   <Link
+                    href='/new-note'
+                    onClick={() => setIsSidebarOpen(false)}
+                    className='text-[#242627] hover:text-gray-600'
+                  >
+                    New Note
+                  </Link>
+                  <Link
                     href='/all-notes'
                     onClick={() => setIsSidebarOpen(false)}
                     className='text-[#242627] hover:text-gray-600'
                   >
                     All Notes
+                  </Link>
+                  <Link
+                    href='/all-folders'
+                    onClick={() => setIsSidebarOpen(false)}
+                    className='text-[#242627] hover:text-gray-600'
+                  >
+                    All Folders
+                  </Link>
+                  <Link
+                    href='/trash'
+                    onClick={() => setIsSidebarOpen(false)}
+                    className='text-[#242627] hover:text-gray-600'
+                  >
+                    Trashed Notes
                   </Link>
                 </div>
 
