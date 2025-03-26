@@ -5,7 +5,6 @@ import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
 import { FaNoteSticky } from 'react-icons/fa6'
 import Link from 'next/link'
-import { Rings } from 'react-loader-spinner'
 
 const AllFolders = () => {
   const { loggedInUser } = useAuth()
@@ -49,15 +48,7 @@ const AllFolders = () => {
     <div>
       {isFolderLoading ? (
         <div className='flex justify-center items-center'>
-          <Rings
-            visible={true}
-            height='80'
-            width='80'
-            color='#242627'
-            ariaLabel='rings-loading'
-            wrapperStyle={{}}
-            wrapperClass=''
-          />
+          <p className='text-center text-[20px] font-black'>Loading....</p>
         </div>
       ) : sortedFolders.length === 0 ? (
         <p className='text-center text-lg font-semibold mt-6'>

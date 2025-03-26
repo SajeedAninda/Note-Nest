@@ -6,7 +6,6 @@ import useAuth from '../Hooks/useAuth'
 import useAxiosInstance from '../Hooks/useAxiosInstance'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
-import { Rings } from 'react-loader-spinner'
 
 const FolderCards = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -125,15 +124,7 @@ const FolderCards = () => {
         <div className='w-[75%]'>
           {folderLoading ? (
             <div className='flex justify-center items-center'>
-                <Rings
-                  visible={true}
-                  height='80'
-                  width='80'
-                  color='#242627'
-                  ariaLabel='rings-loading'
-                  wrapperStyle={{}}
-                  wrapperClass=''
-                />
+              <p className='text-center text-[20px] font-black'>Loading....</p>
             </div>
           ) : (
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>

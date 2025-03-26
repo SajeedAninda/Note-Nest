@@ -9,7 +9,6 @@ import toast from 'react-hot-toast'
 import UpdateModal from '../UpdateModal/UpdateModal'
 import { MdDelete } from 'react-icons/md'
 import { useSearch } from '../SearchContext/SearchProvider'
-import { Rings } from 'react-loader-spinner'
 
 const AllNotes = () => {
   const { loggedInUser } = useAuth()
@@ -85,15 +84,7 @@ const AllNotes = () => {
     <div>
       {isNotesLoading && (
         <div className='flex justify-center items-center'>
-          <Rings
-            visible={true}
-            height='80'
-            width='80'
-            color='#242627'
-            ariaLabel='rings-loading'
-            wrapperStyle={{}}
-            wrapperClass=''
-          />
+          <p className='text-center text-[20px] font-black'>Loading....</p>
         </div>
       )}
 
